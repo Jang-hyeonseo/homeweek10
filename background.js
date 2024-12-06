@@ -1,10 +1,11 @@
 // background.js
+
 chrome.runtime.onInstalled.addListener(() => {
     console.log("Maru Browser Pet installed!");
 });
 
 // Weather API configuration
-const WEATHER_API_KEY = "APIKEY";
+const WEATHER_API_KEY = process.env.WEATHER_API_KEY; // Use an environment variable for API key
 const WEATHER_BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
 
 // Function to convert sky status code to text
@@ -31,10 +32,9 @@ function getBaseTime(hours) {
     else return "2300";
 }
 
-// Function to fetch weather data
-
+// Function to parse XML string
 function parseXMLString(xmlString) {
-    // 간단한 XML 파서
+    // Simple XML parser
     const getValue = (xml, tag) => {
         const regex = new RegExp(`<${tag}>([^<]+)</${tag}>`);
         const match = xml.match(regex);
@@ -70,7 +70,7 @@ function parseXMLString(xmlString) {
 async function fetchWeather(params) {
     try {
         console.log("Starting weather fetch...");
-        
+
         // Get current date and time
         const now = new Date();
         const baseDate = params?.base_date || now.getFullYear() +
@@ -115,7 +115,7 @@ async function fetchWeather(params) {
 
         const response = await fetch(apiUrl);
         console.log("Response status:", response.status);
-        
+
         if (!response.ok) {
             throw new Error(`API responded with status: ${response.status}`);
         }
@@ -125,7 +125,7 @@ async function fetchWeather(params) {
 
         // Parse XML
         const parsedData = parseXMLString(xmlText);
-        
+
         if (parsedData.resultCode !== '00') {
             throw new Error(`API Error: ${parsedData.resultMsg} (${parsedData.resultCode})`);
         }
@@ -142,13 +142,13 @@ async function fetchWeather(params) {
                         weatherInfo.TMP = item.fcstValue + '°C';
                         break;
                     case 'SKY': // 하늘상태
-                        weatherInfo.SKY = item.fcstValue;
+                        weatherInfo.SKY = getSkyStatus(item.fcstValue);
                         break;
                     case 'POP': // 강수확률
-                        weatherInfo.POP = item.fcstValue;
+                        weatherInfo.POP = item.fcstValue + '%';
                         break;
                     case 'REH': // 습도
-                        weatherInfo.REH = item.fcstValue;
+                        weatherInfo.REH = item.fcstValue + '%';
                         break;
                 }
             }
