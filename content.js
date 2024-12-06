@@ -32,7 +32,7 @@ let currentInputBox = null;
 let currentResponseBox = null;
 
 // GPT API Key
-const GPT_API_KEY = "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";
+const GPT_API_KEY = "APIKEY";
 const GPT_API_URL = "https://api.openai.com/v1/chat/completions";
 
 // Function to update weather button position

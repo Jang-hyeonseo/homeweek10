@@ -4,7 +4,7 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 // Weather API configuration
-const WEATHER_API_KEY = "ZIm/L9DxUphsfnmgLGnnXeX+LW51PRMAwyUF5R2LFR1ZAknjj+GeTbp1n7TEwRtdXm5VIvyGp2gakFhmgmEWCw==";
+const WEATHER_API_KEY = "APIKEY";
 const WEATHER_BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
 
 // Function to convert sky status code to text
