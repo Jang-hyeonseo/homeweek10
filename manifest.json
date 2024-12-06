@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "Maru Browser Pet",
+  "version": "1.0",
+  "description": "A pet that roams your browser and provides weather updates using Korea Meteorological Administration API.",
+  "icons": {
+    "48": "images/cat.gif",
+    "128": "images/cat.gif"
+  },
+  "permissions": [
+    "storage", 
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://api.openai.com/",
+    "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/*",
+    "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": "images/cat.gif"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "images/cat.gif",
+        "images/click.gif",
+        "images/weather.png",
+        "popup/popup.html"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
